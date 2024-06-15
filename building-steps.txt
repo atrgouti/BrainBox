@@ -1,0 +1,15 @@
+1. composer create-project laravel/laravel name
+2.composer require larave/breeze --dev // adding regestration and login functionality
+3. php artisan breeze:install // to use laravel with inertia 
+
+now you can run you're commands:
+php artisan serve/ npm run dev / php artisa tinker 
+
+and all it works nice, you can also add a email verification
+just go to user.php model and uncomment the mustverifyemail contract, and add implements MustVerifyEmail to the class
+
+make model:
+php artisan make:model Set -fm // makes model.factory.migration
+
+make controller:
+php artisan make:controller SetController --model=Set --requests --resource

@@ -22,7 +22,7 @@ use Inertia\Inertia;
 Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/', fn() => Inertia::render('Dashboard'))->name('dashboard');
     
     Route::resource('Word', WordController::class);
     Route::resource('Set', SetController::class);
@@ -32,12 +32,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
      // Custom route for showing a specific set
     //  Route::get('/Set/{set}', [SetController::class, 'show'])->name('sets.show');
     Route::get('/card/{id}', [SetController::class, 'show'])->name('cards.show');
+    Route::delete('/card/{id}/{setId}', [CardController::class, 'destroy'])->name('cards.delete');
+    Route::get('/editcard/{id}', [CardController::class, 'edit'])->name('cards.edit');
+    Route::patch('/editcard/{id}', [CardController::class, 'update'])->name('cards.update');
     Route::get('/addnewset', [SetController::class, 'create'])->name('sets.create');
     Route::post('/addnewset', [SetController::class, 'store'])->name('sets.store');
     Route::delete('/set/{id}', [SetController::class, 'destroy'])->name('sets.delete');
     Route::get('/card/test', [WordTestController::class, 'index'])->name('cards.test');
     Route::get('/card/{id}/addnewword', [CardController::class, 'create'])->name('cards.create');
     Route::post('/addnewword', [CardController::class, 'store'])->name('cards.store');
+    
 });
 
 Route::middleware('auth')->group(function () {

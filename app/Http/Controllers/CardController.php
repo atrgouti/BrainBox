@@ -57,24 +57,33 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Card $card)
+    public function edit($id)
     {
-        //
+        $carrd = Card::findOrFail($id);
+        return inertia("Sets/updateWord", compact("carrd"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(UpdateCardRequest $request, $id)
     {
-        //
+        $card1 = Card::findOrFail($id);
+        $card1->word = $request->get('word');
+        $card1->translation = $request->get('translation');
+        $card1->example = $request->get('example');
+        $card1->update();
+        return redirect('/')->with('success', 'Employe Modifié avec succès');   
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Card $card)
-    {
-        //
-    }
+    public function destroy($id, $setId)
+{
+    $cardd = Card::findOrFail($id);
+    $cardd->delete();
+    return redirect()->route('cards.show', ['id' => $setId])->with('success', 'card a été supprimé avec succès');
+}
+
 }

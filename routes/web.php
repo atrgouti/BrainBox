@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SetController;
 use App\Http\Controllers\WordTestController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -22,7 +24,9 @@ use Inertia\Inertia;
 Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    // Route::get('/', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     
     Route::resource('Word', WordController::class);
     Route::resource('Set', SetController::class);
@@ -41,7 +45,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/card/test', [WordTestController::class, 'index'])->name('cards.test');
     Route::get('/card/{id}/addnewword', [CardController::class, 'create'])->name('cards.create');
     Route::post('/addnewword', [CardController::class, 'store'])->name('cards.store');
+
+    // this is presentation routes 
     
+    Route::get('/presentation', [PresentationController::class, 'index'])->name('presentations.index');    
+    Route::get('/presentation/{id}', [PresentationController::class, 'show'])->name('presentations.show');    
+    Route::get('/presentations/addnewPresentation', [PresentationController::class, 'create'])->name('presentations.create');    
+    Route::post('/presentations/addnewPresentation', [PresentationController::class, 'store'])->name('presentations.store');    
 });
 
 Route::middleware('auth')->group(function () {

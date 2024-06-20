@@ -34,6 +34,12 @@ export default function Authenticated({ user, header, children }) {
                 >
                   All Sets
                 </NavLink>
+                <NavLink
+                  href={route("presentations.index")}
+                  active={route().current("presentations.index")}
+                >
+                  All Presentations
+                </NavLink>
               </div>
             </div>
 

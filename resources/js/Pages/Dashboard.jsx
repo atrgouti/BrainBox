@@ -1,7 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, query }) {
+  console.log("teste", query);
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -17,7 +18,7 @@ export default function Dashboard({ auth }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded- lg:w-1/2 mr-4 text-center">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              Hello {auth.user.name}! You're logged in
+              YOU HAVE {query.length} SETS
             </div>
           </div>
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg lg:w-1/2 ml-1 text-center">

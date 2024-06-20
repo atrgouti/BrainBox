@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Presentation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Set;
 
-
-class DashboardController extends Controller
+class PresentationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $query = Set::where('userid', $user->id)->get();
-        return inertia("Dashboard",  compact("query"));
+        $mypresentations = Presentation::where('userid', $user->id)->get(); 
+        return inertia("Presentations", compact("mypresentations"));
     }
 
     /**
@@ -25,7 +24,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        //
+        return inertia("PresentationComponants/AddNewPresentation");
     }
 
     /**
@@ -33,15 +32,23 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $presentation = new Presentation();
+        $presentation->userid = $user->id;
+        $presentation->title = $request->input("title");
+        $presentation->description = $request->input("description");
+
+        $presentation->save();
+        return redirect("/presentation")->with("success", "set has been added with success");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $p = Presentation::where('id', $id)->get(); 
+        return inertia("PresentationComponants/ViewPresentation", compact("p"));
     }
 
     /**

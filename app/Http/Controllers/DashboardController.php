@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Set;
+use App\Models\Presentation;
 
 
 class DashboardController extends Controller
@@ -17,7 +18,8 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $query = Set::where('userid', $user->id)->get();
-        return inertia("Dashboard",  compact("query"));
+        $presentations = Presentation::where('userid', $user->id)->get();
+        return inertia("Dashboard",  compact("query", "presentations"));
     }
 
     /**

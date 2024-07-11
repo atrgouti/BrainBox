@@ -42,3 +42,16 @@ _____________________________________________________________________________
 | created_at     | TIMESTAMP                                              |
 | updated_at     | TIMESTAMP                                              |
 |________________|________________________________________________________|
+
+trigger:
+USE laravel;
+DELIMITER //
+
+CREATE TRIGGER before_set_delete
+BEFORE DELETE ON sets
+FOR EACH ROW
+BEGIN
+    DELETE FROM cards WHERE set_id = OLD.id;
+END //
+
+DELIMITER ;

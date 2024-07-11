@@ -3,25 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\Set;
-use App\Models\Presentation;
 use App\Models\Article;
 
 
-class DashboardController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user();
-        $query = Set::where('userid', $user->id)->get();
-        $article = Article::all();
-        $presentations = Presentation::where('userid', $user->id)->get();
-        return inertia("Dashboard",  compact("query", "presentations", "article"));
+        //
     }
 
     /**
@@ -43,10 +35,10 @@ class DashboardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $article = Article::where('id', $id)->get();
-        return inertia("ReadArticle", compact("article"));
+        $article = Article::where('id', $id);
+        return inertia("ReadArticle", compact('article'));
     }
 
     /**

@@ -4,6 +4,7 @@ import { Link } from "@inertiajs/react";
 import { useParams } from "react-router-dom";
 
 export default function AddNewWord({ auth, id }) {
+  console.log("iddd", id);
   const { data, setData, post, processing, errors } = useForm({
     word: "",
     translation: "",
@@ -13,7 +14,7 @@ export default function AddNewWord({ auth, id }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route("cards.store")); // Adjust the route to match your Laravel route
+    post(route("cards.store", id)); // Adjust the route to match your Laravel route
   };
 
   return (

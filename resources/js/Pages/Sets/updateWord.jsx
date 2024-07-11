@@ -1,8 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function UpdateWord({ auth, carrd }) {
-  console.log("hada", carrd.id);
+export default function UpdateWord({ auth, carrd, setId }) {
+  console.log("hada", setId);
   const { data, setData, post, patch, processing, errors } = useForm({
     word: carrd.word || "",
     translation: carrd.translation || "",
@@ -11,7 +11,7 @@ export default function UpdateWord({ auth, carrd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    patch(route("cards.update", carrd.id)); // Adjust the route to match your Laravel route
+    patch(route("cards.update", { setId: setId, id: carrd.id })); // Adjust the route to match your Laravel route
   };
 
   return (

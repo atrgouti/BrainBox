@@ -5,6 +5,7 @@ use App\Http\Controllers\SetController;
 use App\Http\Controllers\WordTestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PresentationController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -21,7 +22,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::redirect('/', '/dashboard');
+// Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/', fn() => Inertia::render('Dashboard'))->name('dashboard');
@@ -33,18 +34,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('Card', CardController::class);
     Route::resource('User', UserController::class);
 
+
+    Route::get('/sets', [SetController::class, 'index'])->name('sets.index');
+
+
      // Custom route for showing a specific set
     //  Route::get('/Set/{set}', [SetController::class, 'show'])->name('sets.show');
     Route::get('/card/{id}', [SetController::class, 'show'])->name('cards.show');
     Route::delete('/card/{id}/{setId}', [CardController::class, 'destroy'])->name('cards.delete');
-    Route::get('/editcard/{id}', [CardController::class, 'edit'])->name('cards.edit');
-    Route::patch('/editcard/{id}', [CardController::class, 'update'])->name('cards.update');
+    Route::get('/editcard/{setId}/{id}', [CardController::class, 'edit'])->name('cards.edit');
+    Route::patch('/editcard/{id}/{setId}', [CardController::class, 'update'])->name('cards.update');
     Route::get('/addnewset', [SetController::class, 'create'])->name('sets.create');
     Route::post('/addnewset', [SetController::class, 'store'])->name('sets.store');
     Route::delete('/set/{id}', [SetController::class, 'destroy'])->name('sets.delete');
     Route::get('/card/test', [WordTestController::class, 'index'])->name('cards.test');
     Route::get('/card/{id}/addnewword', [CardController::class, 'create'])->name('cards.create');
-    Route::post('/addnewword', [CardController::class, 'store'])->name('cards.store');
+    Route::post('/addnewword/{setId}', [CardController::class, 'store'])->name('cards.store');
 
     // this is presentation routes 
     
@@ -52,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/presentation/{id}', [PresentationController::class, 'show'])->name('presentations.show');    
     Route::get('/presentations/addnewPresentation', [PresentationController::class, 'create'])->name('presentations.create');    
     Route::post('/presentations/addnewPresentation', [PresentationController::class, 'store'])->name('presentations.store');    
+
+
+    //this is articles route 
+    Route::get("/article/{id}", [DashboardController::class, 'show'])->name('article.show');
 });
 
 Route::middleware('auth')->group(function () {

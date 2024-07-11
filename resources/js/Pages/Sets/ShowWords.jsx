@@ -1,18 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 
 function ShowWords({ auth, cards, nameOfTheSet }) {
   const handleDelete = (id, setId) => {
     if (confirm("Are you sure you want to delete this set?")) {
-      Inertia.delete(route("cards.delete", { id: id, setId: setId }), {
-        onSuccess: () => {
-          alert("Set deleted successfully");
-        },
-        onError: () => {
-          alert("There was an error deleting the set");
-        },
-      });
+      router.delete(route("cards.delete", { id: id, setId: setId }));
     }
   };
 
@@ -69,7 +62,10 @@ function ShowWords({ auth, cards, nameOfTheSet }) {
                       </td>
                       <td className="px-3 py-2">
                         <Link
-                          href={route("cards.edit", cards.id)}
+                          href={route("cards.edit", {
+                            setId: nameOfTheSet[0].id,
+                            id: cards.id,
+                          })}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                         >
                           Edit

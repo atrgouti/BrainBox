@@ -100,6 +100,7 @@ class SetController extends Controller
      */
     public function destroy($id)
     {
+        
         $sett = Set::findOrFail($id);
         $sett->delete();
         return redirect('/Set')->with('success', 'Employé a été supprimé avec succès');

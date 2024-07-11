@@ -33,7 +33,7 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCardRequest $request)
+    public function store(StoreCardRequest $request, $setID)
     {
        
         $set = new Card();
@@ -43,7 +43,7 @@ class CardController extends Controller
         $set->example = $request->input("example");
 
         $set->save();
-        return redirect("/Set")->with("success", "set has been added with success");
+        return redirect()->route('cards.show', $setID)->with('success', 'Set has been deleted successfully.');
     }
 
     /**
@@ -57,23 +57,24 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($setId, $id)
     {
         $carrd = Card::findOrFail($id);
-        return inertia("Sets/updateWord", compact("carrd"));
+        return inertia("Sets/updateWord", compact("setId","carrd"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, $id)
+    public function update(UpdateCardRequest $request, $id, $setId)
     {
         $card1 = Card::findOrFail($id);
         $card1->word = $request->get('word');
         $card1->translation = $request->get('translation');
         $card1->example = $request->get('example');
         $card1->update();
-        return redirect('/')->with('success', 'Employe Modifié avec succès');   
+        return redirect()->route('cards.show', ['id' => $setId])->with('success', 'card a été supprimé avec succès');
+ 
     }
 
     /**

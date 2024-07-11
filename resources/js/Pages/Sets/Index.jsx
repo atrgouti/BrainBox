@@ -1,18 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react"; // Ensure you have imported Link and Head correctly
+import { Head, Link, router } from "@inertiajs/react"; // Ensure you have imported Link and Head correctly
 import { Inertia } from "@inertiajs/inertia";
 
 function Index({ auth, sets }) {
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete this set?")) {
-      Inertia.delete(route("sets.delete", id), {
-        onSuccess: () => {
-          alert("Set deleted successfully");
-        },
-        onError: () => {
-          alert("There was an error deleting the set");
-        },
-      });
+      router.delete(route("sets.delete", id));
     }
   };
 

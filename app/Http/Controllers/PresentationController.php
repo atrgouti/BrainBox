@@ -7,6 +7,7 @@ use App\Models\Presentation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
+
 class PresentationController extends Controller
 {
     /**
@@ -56,22 +57,30 @@ class PresentationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $presentation = Presentation::findOrFail($id);
+        return inertia("PresentationComponants/UpdatePresentation", compact("presentation"));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $presentation = Presentation::findOrFail($id);
+        $presentation->title = $request->get("title");
+        $presentation->description = $request->get("description");
+        $presentation->update();
+        return redirect()->route('presentations.show', ['id' => $id])->with('success', 'card a été supprimé avec succès');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $presentationFound = Presentation::findOrFail($id);
+        $presentationFound->delete();
+        return redirect('/presentation')->with('success', 'Employé a été supprimé avec succès');
     }
 }

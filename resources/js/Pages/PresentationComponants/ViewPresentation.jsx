@@ -3,7 +3,6 @@ import { Head, Link } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
 
 function ViewPresentation({ auth, p }) {
-  console.log(p[0]);
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -12,7 +11,7 @@ function ViewPresentation({ auth, p }) {
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"></h2>
           <button className="ont-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             <Link
-              href={route("cards.create", 1)}
+              href={route("presentations.edit", p[0].id)}
               className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
             >
               Edit This Presentation

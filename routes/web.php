@@ -47,7 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/addnewset', [SetController::class, 'create'])->name('sets.create');
     Route::post('/addnewset', [SetController::class, 'store'])->name('sets.store');
     Route::delete('/set/{id}', [SetController::class, 'destroy'])->name('sets.delete');
-    Route::get('/card/test', [WordTestController::class, 'index'])->name('cards.test');
     Route::get('/card/{id}/addnewword', [CardController::class, 'create'])->name('cards.create');
     Route::post('/addnewword/{setId}', [CardController::class, 'store'])->name('cards.store');
 
@@ -57,8 +56,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/presentation/{id}', [PresentationController::class, 'show'])->name('presentations.show');    
     Route::get('/presentations/addnewPresentation', [PresentationController::class, 'create'])->name('presentations.create');    
     Route::post('/presentations/addnewPresentation', [PresentationController::class, 'store'])->name('presentations.store');    
+    Route::delete('/presentations/{id}', [PresentationController::class, 'destroy'])->name('presentations.delete');    
+    Route::get('/presentations/edit/{id}', [PresentationController::class, 'edit'])->name('presentations.edit');    
+    Route::patch('/presentations/{id}', [PresentationController::class, 'update'])->name('presentations.update');    
 
 
+    // test routes
+    Route::get("/sets/test/{id}", [WordTestController::class, 'getWords'])->name("words.test");
+
+    
     //this is articles route 
     Route::get("/article/{id}", [DashboardController::class, 'show'])->name('article.show');
 });

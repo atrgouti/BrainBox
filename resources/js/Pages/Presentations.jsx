@@ -1,9 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react"; // Ensure you have imported Link and Head correctly
+import { Head, Link, router } from "@inertiajs/react"; // Ensure you have imported Link and Head correctly
 import { Inertia } from "@inertiajs/inertia";
 
 function Presentations({ auth, mypresentations }) {
-  console.log(mypresentations[0]);
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -25,15 +24,35 @@ function Presentations({ auth, mypresentations }) {
     >
       <Head title="Presentations" />
       <div className="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div class="flex flex-wrap justify-between items-center w-full max-w-7xl px-4">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-between items-center w-full max-w-7xl px-4">
             {mypresentations.map((p) => (
-              <Link href={route("presentations.show", p.id)}>
+              <Link
+                key={p.id}
+                className="relative"
+                href={route("presentations.show", p.id)}
+              >
                 <div
                   key={p.id}
-                  class="flex items-center justify-center w-[300px] min-w-[200px] h-64 bg-sky-500 mx-2 mb-10 cursor-pointer transform transition-transform duration-200 hover:scale-110"
+                  className="flex items-center justify-center w-[300px] min-w-[200px] h-64 bg-sky-500 mx-2 mb-10 cursor-pointer"
                 >
-                  <h1 class="text-white text-2xl">{p.title}</h1>
+                  <h1 className="text-white text-2xl">{p.title}</h1>
+                  <img
+                    className="absolute bottom-12 right-4 h-10"
+                    src="/delete-icon-white.svg"
+                    alt=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (
+                        confirm(
+                          "Are you sure you want to delete this presentation?"
+                        )
+                      ) {
+                        router.delete(route("presentations.delete", p.id));
+                      }
+                    }}
+                  />
                 </div>
               </Link>
             ))}

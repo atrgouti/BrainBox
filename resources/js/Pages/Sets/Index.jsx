@@ -64,6 +64,12 @@ function Index({ auth, sets }) {
                         >
                           Delete
                         </button>
+                        <Link
+                          href={route("words.test", set.id)}
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                        >
+                          Test
+                        </Link>
                       </td>
                     </tr>
                   ))}

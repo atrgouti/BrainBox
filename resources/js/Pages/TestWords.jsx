@@ -10,6 +10,13 @@ function TestWords({ auth, words, set }) {
   const [totalPoitns, setTotalPoints] = useState(0);
   const [answer, setAnswer] = useState("");
   const [answercheck, setAnswecheck] = useState("");
+
+  //result of my answer
+  const [result, setResult] = useState("");
+
+  //show correct word
+  const [showCorrectWord, setShowCorrectWord] = useState(false);
+
   function calculateTime(numQuestions) {
     const totalSeconds = numQuestions * 5;
     const minutes = Math.floor(totalSeconds / 60);
@@ -23,15 +30,51 @@ function TestWords({ auth, words, set }) {
   }
 
   function checkanswer() {
+    console.log("answer", answer, "antwort", words[questionIdx].word);
     if (answer === words[questionIdx].word) {
       setStatus("check");
-      setAnswer((an) => an + 1);
+      setTotalPoints((an) => an + 1);
       setAnswecheck("correct");
     } else {
       setStatus("check");
       setAnswecheck("false");
     }
   }
+
+  // show failure
+
+  const checkWord = () => {
+    let resultHtml = "";
+    // for (let i = 0; i < answer.length; i++) {
+    //   if (
+    //     i < words[questionIdx].word.length &&
+    //     answer[i] === words[questionIdx].word[i]
+    //   ) {
+    //     resultHtml += `<span style="color: green;">${answer[i]}</span>`;
+    //   } else {
+    //     resultHtml += `<span style="color: red;">${answer[i]}</span>`;
+    //   }
+    // }
+
+    // // Handle extra characters in input longer than correctWord
+    // if (answer.length > words[questionIdx].word.length) {
+    //   for (let i = words[questionIdx].word.length; i < answer.length; i++) {
+    //     resultHtml += `<span style="color: red;">${answer[i]}</span>`;
+    //   }
+    // }
+    for (let i = 0; i < answer.length; i++) {
+      if (i < answer.length && answer[i] === words[questionIdx].word[i]) {
+        resultHtml += `<span style="color: green; background-color: white; padding: 0 5px;">${answer[i]}</span>`;
+      } else if (i < answer.length) {
+        resultHtml += `<span style="color: red; background-color: white; padding: 0 5px;">${answer[i]}</span>`;
+        setShowCorrectWord(true);
+      } else {
+        resultHtml += `<span style="background-color: white; padding: 0 5px;">&nbsp;</span>`;
+      }
+    }
+
+    setResult(resultHtml);
+  };
 
   return (
     <AuthenticatedLayout
@@ -71,9 +114,14 @@ function TestWords({ auth, words, set }) {
       )}
       {status === "test" && (
         <div className="flex flex-col justify-center items-center">
-          <div className="py-12  text-white w-10/12  sm:w-1/2 text-center ">
+          <div className="py-12  text-white w-10/12  sm:w-1/2 text-center relative">
+            <p className="absolute right-2 top-12">
+              {questionIdx + 1}/{words.length}
+            </p>
+
             <h1>{words[questionIdx].translation}</h1>
             <input
+              required
               onChange={(e) => setAnswer(e.target.value)}
               value={answer}
               type="text"
@@ -82,7 +130,12 @@ function TestWords({ auth, words, set }) {
             <button
               className="mt-4"
               onClick={() => {
-                checkanswer();
+                if (answer !== "") {
+                  checkanswer();
+                  checkWord();
+                } else {
+                  alert("please answer the question!");
+                }
               }}
             >
               check answer
@@ -90,7 +143,85 @@ function TestWords({ auth, words, set }) {
           </div>
         </div>
       )}
-      {status === "check" && <h1 className="text-white">{answercheck}</h1>}
+      {status === "check" && (
+        <div className="flex flex-col justify-center items-center">
+          <div className="py-12  text-white w-10/12  sm:w-1/2 text-center relative">
+            <p className="absolute right-2 top-12">
+              {questionIdx + 1}/{words.length}
+            </p>
+            <h1>{words[questionIdx].translation}</h1>
+            <input
+              required
+              onChange={(e) => setAnswer(e.target.value)}
+              value={answer}
+              type="text"
+              className="w-full mt-10    text-white text-center bg-slate-900 "
+              disabled
+            />
+            <h1
+              className={`${
+                answercheck === "correct" ? "text-green-400" : "text-red-500"
+              } mt-5 uppercase`}
+            >
+              {answercheck}
+            </h1>
+            <div dangerouslySetInnerHTML={{ __html: result }} />
+            {showCorrectWord && (
+              <p>The Correct Answer: {words[questionIdx].word}</p>
+            )}
+            {questionIdx === words.length - 1 ? (
+              <button
+                className="mt-4 bg-white border-zinc-100 text-black py-2 px-6"
+                onClick={() => setStatus("finish")}
+              >
+                Finish
+              </button>
+            ) : (
+              <button
+                className="mt-4 bg-white border-zinc-100 text-black py-2 px-6    "
+                onClick={() => {
+                  if (answer !== "") {
+                    setQuestionIdx((curr) => curr + 1);
+                    setStatus("test");
+                    setAnswer("");
+                  } else {
+                    alert("please answer!");
+                  }
+                }}
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      {status === "finish" && (
+        <div className="flex flex-col justify-center items-center">
+          <div className="py-12  text-white w-10/12  sm:w-1/2 text-center relative flex-col flex">
+            <h1>
+              you scored {totalPoitns} / {words.length}
+            </h1>
+            <button
+              onClick={() => {
+                setStatus("start");
+                setQuestionIdx(0);
+                setTotalPoints(0);
+                setAnswer("");
+                setAnswecheck("");
+              }}
+              className="mt-4 bg-white border-zinc-100 text-black py-2 px-6"
+            >
+              RESET
+            </button>
+            <Link
+              href={route("sets.index")}
+              className="mt-4 bg-white border-zinc-100 text-black py-2 px-6"
+            >
+              Go to sets
+            </Link>
+          </div>
+        </div>
+      )}
     </AuthenticatedLayout>
   );
 }

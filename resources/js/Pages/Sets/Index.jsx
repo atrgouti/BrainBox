@@ -13,18 +13,16 @@ function Index({ auth, sets }) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             Sets
           </h2>
-          <button className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <Link
-              href={route("sets.create")}
-              className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-            >
-              add new set
-            </Link>
-          </button>
+          <Link
+            href={route("sets.create")}
+            className=" bg-white border-zinc-100 text-black py-2 px-6"
+          >
+            add new set
+          </Link>
         </div>
       }
     >
@@ -58,18 +56,18 @@ function Index({ auth, sets }) {
                         >
                           View
                         </Link>
-                        <button
-                          onClick={() => handleDelete(set.id)}
-                          className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                        >
-                          Delete
-                        </button>
                         <Link
                           href={route("words.test", set.id)}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                         >
                           Test
                         </Link>
+                        <button
+                          onClick={() => handleDelete(set.id)}
+                          className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}

@@ -18,14 +18,20 @@ function ShowWords({ auth, cards, nameOfTheSet }) {
             All Words In{" "}
             <b style={{ color: "aquamarine" }}>{nameOfTheSet[0].title}</b>
           </h2>
-          <button className="ont-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+          <div>
             <Link
               href={route("cards.create", nameOfTheSet[0].id)}
-              className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
+              className="mt-4 bg-blue-600 border-zinc-100 text-white py-2 px-6 mr-3"
             >
               Add New Word
             </Link>
-          </button>
+            <Link
+              href={route("words.test", nameOfTheSet)}
+              className="mt-4 bg-white border-zinc-100 text-black py-2 px-6"
+            >
+              Test
+            </Link>
+          </div>
         </div>
       }
     >

@@ -7,18 +7,16 @@ function Presentations({ auth, mypresentations }) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             My Presentations
           </h2>
-          <button className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <Link
-              href={route("presentations.create")}
-              className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-            >
-              add new presentation
-            </Link>
-          </button>
+          <Link
+            href={route("presentations.create")}
+            className=" bg-white border-zinc-100 text-black py-2 px-6"
+          >
+            add new presentation
+          </Link>
         </div>
       }
     >

@@ -41,7 +41,7 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             />
           </div>
 
-          {/* update the new data in users table */}
+          {/* update the new data in user's table */}
           <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
             <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
               Profile Personal Information

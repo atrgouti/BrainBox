@@ -47,7 +47,14 @@ export default function Authenticated({ user, header, children }) {
               <div className="ms-3 relative">
                 <Dropdown>
                   <Dropdown.Trigger>
-                    <span className="inline-flex rounded-md">
+                    <span className="inline-flex rounded-md items-center">
+                      {user.profile_image && (
+                        <img
+                          src={`/users_images/${user.profile_image}`}
+                          alt=""
+                          className="h-8 w-auto rounded-full"
+                        />
+                      )}
                       <button
                         type="button"
                         className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"

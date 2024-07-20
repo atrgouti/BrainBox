@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
+
 
 class ProfileController extends Controller
 {
@@ -43,6 +45,19 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
+
+     public function updatePersonalINformation(Request $request, $id ){
+
+        $uu = User::findOrFAil($id);
+        $uu->about_me = $request->get("about_me");
+        $uu->location = $request->get("location");
+        $uu->language_level = $request->get("language_level");
+        $uu->phone_number = $request->get("phone_number");
+        $uu->update();
+        return redirect("/profile")->with('success', 'personal information updated sucefully');
+     }
+
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([

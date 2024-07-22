@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class ProfileController extends Controller
@@ -56,6 +58,26 @@ class ProfileController extends Controller
         $uu->update();
         return redirect("/profile")->with('success', 'personal information updated sucefully');
      }
+
+     public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust max size as per your requirements
+        ]);
+
+        $user = Auth::user();
+
+        // Handle file upload
+        if ($request->file('file')) {
+            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(public_path('users_images'), $fileName);
+            $user->profile_image = $fileName;
+            $user->save();
+        }
+
+        return redirect()->back()->with('success', 'Profile image updated successfully.');
+    }
+
 
 
     public function destroy(Request $request): RedirectResponse

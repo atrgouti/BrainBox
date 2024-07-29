@@ -5,6 +5,7 @@ use App\Http\Controllers\SetController;
 use App\Http\Controllers\WordTestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PresentationController;
+use App\Http\Controllers\QuickController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\UserController;
@@ -63,10 +64,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // test routes
     Route::get("/sets/test/{id}", [WordTestController::class, 'getWords'])->name("words.test");
+    Route::get("/sets/quizz/{id}", [WordTestController::class, 'getQuizzes'])->name("words.quizz");
 
     
     //this is articles route 
     Route::get("/article/{id}", [DashboardController::class, 'show'])->name('article.show');
+
+    //this quizess
+    Route::get("/quizzes", [QuickController::class, 'index'])->name("quizzes.index");
+    Route::get("/quizzes/{id}", [QuickController::class, 'show'])->name("quizzes.show");
+
 });
 
 Route::middleware('auth')->group(function () {

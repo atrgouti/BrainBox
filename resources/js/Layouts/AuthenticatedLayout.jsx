@@ -40,6 +40,12 @@ export default function Authenticated({ user, header, children }) {
                 >
                   All Presentations
                 </NavLink>
+                <NavLink
+                  href={route("quizzes.index")}
+                  active={route().current("quizzes.index")}
+                >
+                  Quizzes
+                </NavLink>
               </div>
             </div>
 

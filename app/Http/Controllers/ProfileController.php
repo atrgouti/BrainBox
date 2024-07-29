@@ -12,6 +12,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 
 
@@ -69,7 +71,8 @@ class ProfileController extends Controller
 
         // Handle file upload
         if ($request->file('file')) {
-            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
+            $randomString = Str::random(20); // Generate a random string of 20 characters
+            $fileName = $randomString . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(public_path('users_images'), $fileName);
             $user->profile_image = $fileName;
             $user->save();

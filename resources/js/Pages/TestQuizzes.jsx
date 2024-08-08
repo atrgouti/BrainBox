@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function TestQuizzes({ auth, quizzes, quizzName }) {
   // start test check end
@@ -30,7 +30,6 @@ function TestQuizzes({ auth, quizzes, quizzName }) {
   }
 
   function checkanswer() {
-    console.log("answer", answer, "antwort", quizzes[questionIdx].word);
     if (answer === quizzes[questionIdx].word) {
       setStatus("check");
       setTotalPoints((an) => an + 1);
@@ -76,6 +75,34 @@ function TestQuizzes({ auth, quizzes, quizzName }) {
     setResult(resultHtml);
   };
 
+  //handle next button using enter key
+  const handleButtonClick = () => {
+    if (answer !== "") {
+      setQuestionIdx((curr) => curr + 1);
+      setStatus("test");
+      setAnswer("");
+    } else {
+      alert("please answer the question!");
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (eve) => {
+      if (eve.key === " ") {
+        if (questionIdx !== quizzes.length - 1) {
+          setQuestionIdx((curr) => curr + 1);
+          setStatus("test");
+          setAnswer("");
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -126,6 +153,16 @@ function TestQuizzes({ auth, quizzes, quizzName }) {
               value={answer}
               type="text"
               className="w-full mt-10    text-white text-center bg-slate-900 "
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (answer !== "") {
+                    checkanswer();
+                    checkWord();
+                  } else {
+                    alert("please answer the question!");
+                  }
+                }
+              }}
             />
             <button
               className="mt-4"
@@ -167,7 +204,10 @@ function TestQuizzes({ auth, quizzes, quizzName }) {
             </h1>
             <div dangerouslySetInnerHTML={{ __html: result }} />
             {showCorrectWord && (
-              <p>The Correct Answer: {quizzes[questionIdx].word}</p>
+              <>
+                <p>The Correct Answer: {quizzes[questionIdx].word}</p>
+                <p>example: {quizzes[questionIdx].example}</p>
+              </>
             )}
             {questionIdx === quizzes.length - 1 ? (
               <button
@@ -179,6 +219,12 @@ function TestQuizzes({ auth, quizzes, quizzName }) {
             ) : (
               <button
                 className="mt-4 bg-white border-zinc-100 text-black py-2 px-6    "
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleButtonClick();
+                    console.log("haha");
+                  }
+                }}
                 onClick={() => {
                   if (answer !== "") {
                     setQuestionIdx((curr) => curr + 1);

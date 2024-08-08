@@ -31,13 +31,14 @@ export default function Dashboard({ auth, query, presentations, article }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
             {article.map((artc) => (
               <Link key={artc.id} href={route("article.show", artc.id)}>
-                <div className="w-full text-center text-white cursor-pointer">
+                <div className="w-full text-center text-white cursor-pointer relative h-72">
                   <img
                     className="w-full h-auto rounded-lg shadow-md"
                     src={`/article_images/${artc.image}`}
                     alt={`Article Image ${artc.id}`}
                   />
                   <h1 className="mt-4 text-xl font-semibold">{artc.title}</h1>
+                  <h1 className="absolute bottom-0 right-0 ">{artc.level}</h1>
                 </div>
               </Link>
             ))}
